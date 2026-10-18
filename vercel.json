@@ -1,18 +1,46 @@
 {
-  "version": 2,
-  "public": true,
-  "cleanUrls": true,
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-XSS-Protection", "value": "1; mode=block" }
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "task1-knowledge-brain": {
+      "root": "task1-knowledge-brain",
+      "framework": "fastapi",
+      "buildCommand": "pip install --upgrade pip && pip install -r requirements.txt"
+    },
+    "task2-inbox-agent": {
+      "root": "task2-inbox-agent",
+      "framework": "express",
+      "buildCommand": "npm install",
+      "bindings": [
+        {
+          "type": "service",
+          "service": "task1-knowledge-brain",
+          "format": "url",
+          "env": "KNOWLEDGE_BRAIN_URL"
+        }
       ]
+    },
+    "task3-meeting-to-scope": {
+      "root": "task3-meeting-to-scope",
+      "framework": "fastapi",
+      "buildCommand": "pip install --upgrade pip && pip install -r requirements.txt",
+      "bindings": [
+        {
+          "type": "service",
+          "service": "task1-knowledge-brain",
+          "format": "url",
+          "env": "KNOWLEDGE_BRAIN_URL"
+        }
+      ]
+    },
+    "portal": {
+      "root": ".",
+      "framework": "static"
     }
+  },
+  "rewrites": [
+    { "source": "/api/brain/(.*)", "destination": { "service": "task1-knowledge-brain" } },
+    { "source": "/api/inbox/(.*)", "destination": { "service": "task2-inbox-agent" } },
+    { "source": "/api/scope/(.*)", "destination": { "service": "task3-meeting-to-scope" } },
+    { "source": "/(.*)", "destination": { "service": "portal" } }
   ]
 }
