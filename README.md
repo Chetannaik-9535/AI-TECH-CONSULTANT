@@ -4,6 +4,16 @@
 
 ---
 
+## 🌐 Live Cloud Deployments (Evaluator Quick Access)
+
+| Component | Platform | Live URL | Features |
+| :--- | :--- | :--- | :--- |
+| **Unified Project Portal** | **Vercel** | `https://ai-tech-consultant.vercel.app` | **All 3 tasks in 1 interactive UI** (Evaluation Hub) |
+| **Task 1: Knowledge Brain** | **Render** | [task1-knowledge-brain-6y2f.onrender.com/docs](https://task1-knowledge-brain-6y2f.onrender.com/docs) | RAG Query API & Swagger Documentation |
+| **Task 2: Customer Inbox Agent** | **Render** | [task2-inbox-agent-6y2f.onrender.com](https://task2-inbox-agent-6y2f.onrender.com) | Live Support Triage & Auto-Reply Dashboard |
+| **Task 3: Meeting to Scope** | **Render** | [task3-meeting-to-scope-6y2f.onrender.com](https://task3-meeting-to-scope-6y2f.onrender.com) | Discovery Transcript Analysis & SOW Generator |
+
+
 ## 🚀 Key Features & Capabilities
 
 1. **Task 1: Knowledge Brain** – RAG-powered product knowledge base, web crawler, section-aware semantic chunker, ChromaDB vector store, and FastAPI backend (`http://localhost:8000`).
