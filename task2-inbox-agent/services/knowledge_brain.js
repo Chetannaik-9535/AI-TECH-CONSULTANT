@@ -4,7 +4,10 @@
  * Gracefully provides intelligent fallback when Knowledge Brain is offline.
  */
 
-const KB_URL = process.env.KNOWLEDGE_BRAIN_URL || "http://localhost:8000";
+const rawKbUrl = process.env.KNOWLEDGE_BRAIN_URL || "http://localhost:8000";
+const KB_URL = rawKbUrl.startsWith("http://") || rawKbUrl.startsWith("https://")
+  ? rawKbUrl
+  : `http://${rawKbUrl}`;
 
 /**
  * Knowledge base fallback articles matching Brilliant Directories architecture
