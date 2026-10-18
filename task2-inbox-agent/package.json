@@ -1,0 +1,17 @@
+{
+  "name": "task2-inbox-agent",
+  "version": "1.0.0",
+  "description": "AI Tech Consultant - Inbox Agent: Autonomous ticket triage, resolution drafting & escalation",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node tests/run_tests.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5"
+  }
+}

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inbox Agent – AI Tech Consultant for Brilliant Directories</title>
+  <meta name="description" content="Autonomous customer support ticket triage, knowledge-grounded resolution drafting, and escalation router for Brilliant Directories.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app" class="app-layout">
+    <!-- Top Navigation Bar -->
+    <header class="top-header">
+      <div class="brand-group">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>AI Tech Consultant <span class="badge-role">Inbox Agent</span></h1>
+          <p class="brand-sub">Autonomous Brilliant Directories Triage &amp; Resolution</p>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Strip -->
+      <div class="metrics-strip">
+        <div class="metric-pill" id="pill-needs-review">
+          <span class="dot dot-amber"></span>
+          <span class="label">Needs Review</span>
+          <span class="count" id="count-needs-review">0</span>
+        </div>
+        <div class="metric-pill" id="pill-auto-drafted">
+          <span class="dot dot-indigo"></span>
+          <span class="label">Auto-Drafted</span>
+          <span class="count" id="count-auto-drafted">0</span>
+        </div>
+        <div class="metric-pill" id="pill-escalated">
+          <span class="dot dot-rose"></span>
+          <span class="label">Escalated</span>
+          <span class="count" id="count-escalated">0</span>
+        </div>
+        <div class="metric-pill" id="pill-resolved">
+          <span class="dot dot-emerald"></span>
+          <span class="label">Resolved</span>
+          <span class="count" id="count-resolved">0</span>
+        </div>
+      </div>
+
+      <!-- Right Header Actions -->
+      <div class="header-actions">
+        <div class="kb-connection-badge" id="kb-status-badge" title="Status of Task 1 Knowledge Brain (Port 8000)">
+          <span class="status-pulse" id="kb-pulse"></span>
+          <span id="kb-status-text">Knowledge Brain: Checking...</span>
+        </div>
+        <button id="btn-analytics" class="btn btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 20V10M12 20V4M6 20v-6"/>
+          </svg>
+          Analytics
+        </button>
+        <button id="btn-simulate-ticket" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          Simulate Ticket
+        </button>
+      </div>
+    </header>
+
+    <!-- Main 3-Column Workspace -->
+    <main class="workspace-grid">
+      <!-- 1. Left Navigation Sidebar -->
+      <aside class="sidebar-nav">
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">Inbox Folders</h3>
+          <ul class="nav-list">
+            <li class="nav-item active" data-filter-status="all">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+              </svg>
+              <span>All Inquiries</span>
+              <span class="nav-badge" id="badge-total">0</span>
+            </li>
+            <li class="nav-item" data-filter-status="needs_review">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              <span>Needs Review</span>
+              <span class="nav-badge badge-amber" id="nav-badge-needs-review">0</span>
+            </li>
+            <li class="nav-item" data-filter-status="auto_drafted">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m18 2 4 4-12 12H6v-4L18 2z"></path>
+              </svg>
+              <span>Auto-Drafted</span>
+              <span class="nav-badge badge-indigo" id="nav-badge-auto-drafted">0</span>
+            </li>
+            <li class="nav-item" data-filter-status="escalated">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m13 2-2 2.5V8l3 2v6l-3 2v3.5L13 24"></path>
+                <circle cx="12" cy="12" r="9"></circle>
+              </svg>
+              <span>Escalated to Human</span>
+              <span class="nav-badge badge-rose" id="nav-badge-escalated">0</span>
+            </li>
+            <li class="nav-item" data-filter-status="resolved">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              <span>Resolved</span>
+              <span class="nav-badge badge-emerald" id="nav-badge-resolved">0</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">Categories</h3>
+          <ul class="filter-chips" id="category-filter-list">
+            <li class="chip active" data-category="all">All Categories</li>
+            <li class="chip" data-category="Domains & SSL">Domains &amp; SSL</li>
+            <li class="chip" data-category="Finance & Billing">Finance &amp; Billing</li>
+            <li class="chip" data-category="Member Management">Member Management</li>
+            <li class="chip" data-category="Custom Code & Widgets">Custom Code &amp; Widgets</li>
+            <li class="chip" data-category="Email & Notifications">Email &amp; Notifications</li>
+          </ul>
+        </div>
+
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">Priority</h3>
+          <div class="priority-tags" id="priority-filter-list">
+            <span class="p-tag active" data-priority="all">All</span>
+            <span class="p-tag p-urgent" data-priority="Urgent">Urgent</span>
+            <span class="p-tag p-high" data-priority="High">High</span>
+            <span class="p-tag p-med" data-priority="Medium">Medium</span>
+            <span class="p-tag p-low" data-priority="Low">Low</span>
+          </div>
+        </div>
+
+        <div class="sidebar-footer">
+          <button id="btn-reset-demo" class="btn btn-ghost btn-sm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+              <path d="M21 3v5h-5"></path>
+              <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+              <path d="M8 16H3v5"></path>
+            </svg>
+            Reset Demo Data
+          </button>
+        </div>
+      </aside>
+
+      <!-- 2. Center Column: Ticket List Feed -->
+      <section class="ticket-feed-panel">
+        <div class="feed-toolbar">
+          <div class="search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="search-input" placeholder="Search by customer, subject, keywords...">
+            <button id="btn-clear-search" class="btn-icon" style="display:none;">&times;</button>
+          </div>
+          <div class="feed-count-summary" id="feed-count-text">Showing 5 tickets</div>
+        </div>
+
+        <div class="ticket-cards-container" id="ticket-cards-list">
+          <!-- Populated dynamically via JS -->
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Loading support tickets...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Right Column: Ticket Inspection & Action Center -->
+      <section class="ticket-detail-panel" id="ticket-detail-view">
+        <!-- Default Empty State -->
+        <div class="empty-detail-state" id="empty-detail">
+          <div class="empty-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </div>
+          <h3>Select a Ticket</h3>
+          <p>Choose an inquiry from the list to review AI triage analysis, inspect Knowledge Brain citations, and dispatch resolutions.</p>
+        </div>
+
+        <!-- Active Ticket Content Container -->
+        <div class="detail-content" id="active-detail" style="display: none;">
+          <!-- Detail Header -->
+          <div class="detail-header">
+            <div class="detail-title-group">
+              <div class="detail-meta-row">
+                <span class="detail-id" id="det-id">TICK-1001</span>
+                <span class="badge" id="det-status-badge">Needs Review</span>
+                <span class="badge" id="det-priority-badge">High</span>
+                <span class="badge badge-outline" id="det-category-badge">Domains &amp; SSL</span>
+              </div>
+              <h2 class="detail-subject" id="det-subject">Subject line placeholder</h2>
+            </div>
+            <div class="detail-header-actions">
+              <button class="btn btn-outline btn-sm" id="btn-escalate-modal">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+                Escalate
+              </button>
+            </div>
+          </div>
+
+          <!-- Customer Identity Card -->
+          <div class="customer-profile-card">
+            <div class="customer-avatar" id="det-avatar">MV</div>
+            <div class="customer-info">
+              <div class="customer-name-row">
+                <strong id="det-customer-name">Marcus Vance</strong>
+                <span class="tier-pill" id="det-customer-tier">VIP Enterprise</span>
+              </div>
+              <div class="customer-sub-row">
+                <span id="det-customer-email">marcus@directoryplus.org</span> &bull; 
+                <span id="det-customer-company">DirectoryPlus Network</span> &bull; 
+                <a href="#" target="_blank" id="det-customer-url" class="site-link">directoryplus.org</a>
+              </div>
+            </div>
+            <div class="urgency-meter-card">
+              <div class="urgency-top">
+                <span>Urgency Score</span>
+                <strong id="det-urgency-num">84/100</strong>
+              </div>
+              <div class="urgency-bar-track">
+                <div class="urgency-bar-fill" id="det-urgency-fill" style="width: 84%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Triage Analysis Banner -->
+          <div class="ai-triage-card">
+            <div class="card-section-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 15h-2v-6h2zm0-8h-2V7h2z"/>
+              </svg>
+              <span>AI Triage Assessment</span>
+              <span class="confidence-tag" id="det-confidence">94% Confidence</span>
+            </div>
+            <div class="triage-grid">
+              <div class="triage-item">
+                <label>Detected Issue</label>
+                <div class="val" id="det-triage-issue">Permalinks desynchronized after custom domain DNS change</div>
+              </div>
+              <div class="triage-item">
+                <label>Sentiment</label>
+                <div class="val" id="det-triage-sentiment"><span class="sentiment-pill" id="det-sentiment-pill">Frustrated</span></div>
+              </div>
+              <div class="triage-item full-width">
+                <label>Recommended Resolution Route</label>
+                <div class="val" id="det-triage-action">Guide customer to Domain Manager settings and execute system cache clear</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Knowledge Brain RAG Sources Card -->
+          <div class="kb-sources-card">
+            <div class="card-section-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              </svg>
+              <span>Grounding Knowledge (Brilliant Directories Articles)</span>
+            </div>
+            <div class="sources-list" id="det-sources-list">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+
+          <!-- Conversation Thread History -->
+          <div class="conversation-thread-card">
+            <div class="card-section-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+              </svg>
+              <span>Inquiry Thread</span>
+            </div>
+            <div class="thread-timeline" id="det-thread-messages">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+
+          <!-- AI Resolution Draft Composer -->
+          <div class="resolution-composer-card">
+            <div class="composer-header">
+              <div class="composer-title-group">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                <span>AI Resolution Draft</span>
+                <span class="badge badge-ready" id="det-draft-status">Ready for Review</span>
+              </div>
+              <div class="tone-selector-group">
+                <label for="tone-select">Tone:</label>
+                <select id="tone-select" class="form-select-sm">
+                  <option value="Professional" selected>Professional</option>
+                  <option value="Empathetic">Empathetic &amp; Reassuring</option>
+                  <option value="Technical">Technical &amp; Concise</option>
+                  <option value="Step-by-Step">Step-by-Step Checklist</option>
+                </select>
+                <button class="btn btn-ghost btn-sm" id="btn-regen-draft" title="Regenerate draft using Knowledge Brain">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                  </svg>
+                  Regenerate
+                </button>
+              </div>
+            </div>
+
+            <div class="composer-body">
+              <textarea id="reply-textarea" rows="12" class="code-textarea" placeholder="AI resolution draft will render here..."></textarea>
+            </div>
+
+            <div class="composer-footer">
+              <div class="composer-hints">
+                <span>⚡ Grounded with 2 cited documentation links</span>
+              </div>
+              <div class="composer-actions">
+                <button class="btn btn-outline" id="btn-save-draft">Save Changes</button>
+                <button class="btn btn-success" id="btn-approve-send">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                  Approve &amp; Send Reply
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal: Simulate New Ticket -->
+    <dialog class="modal-dialog" id="modal-simulate">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Simulate Inbound Support Inquiry</h3>
+          <button class="btn-close" id="btn-close-simulate">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Quick Preset Scenarios (Click to Load):</label>
+            <div class="preset-buttons-row">
+              <button type="button" class="preset-btn" data-preset="ssl">SSL Domain 404</button>
+              <button type="button" class="preset-btn" data-preset="stripe">Stripe Checkout Error</button>
+              <button type="button" class="preset-btn" data-preset="csv">CSV Member Import</button>
+              <button type="button" class="preset-btn" data-preset="widget">Custom Widget Hook</button>
+            </div>
+          </div>
+
+          <form id="form-simulate-ticket">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="sim-name">Customer Name</label>
+                <input type="text" id="sim-name" required value="Rachel Green">
+              </div>
+              <div class="form-group">
+                <label for="sim-email">Customer Email</label>
+                <input type="email" id="sim-email" required value="rachel@cityguide.com">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="sim-company">Company / Directory</label>
+                <input type="text" id="sim-company" required value="CityGuide Media">
+              </div>
+              <div class="form-group">
+                <label for="sim-tier">Customer Tier</label>
+                <select id="sim-tier">
+                  <option value="VIP Enterprise">VIP Enterprise</option>
+                  <option value="Directory Pro" selected>Directory Pro</option>
+                  <option value="Starter">Starter</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="sim-subject">Subject</label>
+              <input type="text" id="sim-subject" required value="How to disable the 'Claim Listing' button for verified members">
+            </div>
+            <div class="form-group">
+              <label for="sim-message">Inquiry Message</label>
+              <textarea id="sim-message" rows="4" required>We have claimed listings on our directory. Once a member is already verified, how can we hide the 'Claim This Listing' button on their public profile page so other visitors don't submit redundant claim requests?</textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline" id="btn-cancel-simulate">Cancel</button>
+              <button type="submit" class="btn btn-primary" id="btn-submit-simulate">
+                Run Triage &amp; Draft Resolution
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Modal: Escalate to Human Expert -->
+    <dialog class="modal-dialog" id="modal-escalate">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Escalate Ticket to Platform Engineering</h3>
+          <button class="btn-close" id="btn-close-escalate">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="modal-desc">This ticket will be dispatched to the Senior Engineering on-call queue and synced to the Task 1 Knowledge Brain escalation system.</p>
+          <form id="form-escalate">
+            <div class="form-group">
+              <label for="esc-reason">Escalation Reason</label>
+              <select id="esc-reason" class="form-select">
+                <option value="custom_code_investigation">Custom Code / Widget Conflict</option>
+                <option value="payment_gateway_api_bug">Payment Gateway / Webhook Mismatch</option>
+                <option value="server_timeout_database">Server Timeout / Database Performance</option>
+                <option value="complex_architecture_guidance">Complex Architecture / Enterprise Guidance</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="esc-note">Engineer Handover Note</label>
+              <textarea id="esc-note" rows="3" placeholder="Provide context on what was already checked and specific errors observed..." required></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline" id="btn-cancel-escalate">Cancel</button>
+              <button type="submit" class="btn btn-danger">Confirm Escalation</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Modal: Analytics Dashboard -->
+    <dialog class="modal-dialog" id="modal-analytics">
+      <div class="modal-card modal-large">
+        <div class="modal-header">
+          <h3>Inbox Agent Performance &amp; AI Metrics</h3>
+          <button class="btn-close" id="btn-close-analytics">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="analytics-metrics-grid">
+            <div class="stat-card">
+              <span class="stat-title">Ticket Deflection Rate</span>
+              <span class="stat-val text-emerald" id="stat-deflection">78%</span>
+              <span class="stat-sub">Resolved via AI documentation grounding</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-title">Avg. Resolution Speed</span>
+              <span class="stat-val text-indigo">1.4s</span>
+              <span class="stat-sub">vs. 4.8h human benchmark</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-title">Grounded Citations</span>
+              <span class="stat-val text-amber">99.4%</span>
+              <span class="stat-sub">Brilliant Directories official doc links</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-title">Escalation Rate</span>
+              <span class="stat-val text-rose" id="stat-escalation-rate">8%</span>
+              <span class="stat-sub">Routed to senior platform engineers</span>
+            </div>
+          </div>
+
+          <div class="analytics-category-box">
+            <h4>Inquiry Categories Breakdown</h4>
+            <div class="category-bars" id="analytics-categories">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

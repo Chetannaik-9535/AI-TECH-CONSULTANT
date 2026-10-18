@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meeting to Scope – AI Tech Consultant for Brilliant Directories</title>
+  <meta name="description" content="AI Discovery Call Transcript Analysis & Automated Project Scoping (SOW) Generator for Brilliant Directories.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div id="app" class="app-layout">
+    <!-- Top Header -->
+    <header class="top-header">
+      <div class="brand-group">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>AI Tech Consultant <span class="badge-role">Meeting to Scope</span></h1>
+          <p class="brand-sub">Discovery Call Analysis &amp; SOW Scoping Generator</p>
+        </div>
+      </div>
+
+      <!-- Center Consultant Rate Widget -->
+      <div class="rate-config-widget">
+        <span class="rate-label">Consulting Rate:</span>
+        <div class="rate-input-box">
+          <span class="currency-symbol">$</span>
+          <input type="number" id="global-rate-input" value="150" min="50" max="500" step="5">
+          <span class="rate-unit">/ hr</span>
+        </div>
+      </div>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <div class="platform-badge">
+          <span class="platform-dot"></span>
+          <span>Ecosystem: Brilliant Directories</span>
+        </div>
+        <button id="btn-new-meeting" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          Ingest Transcript
+        </button>
+      </div>
+    </header>
+
+    <!-- Main 3-Column Layout -->
+    <main class="workspace-grid">
+      <!-- 1. Left Column: Meeting Library -->
+      <aside class="meetings-sidebar">
+        <div class="sidebar-header">
+          <h3>Discovery Sessions</h3>
+          <span class="badge-count" id="meeting-count-badge">0</span>
+        </div>
+
+        <div class="search-box">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="meeting-search-input" placeholder="Search sessions...">
+        </div>
+
+        <div class="meetings-list" id="meetings-list-container">
+          <!-- Populated via JS -->
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Loading discovery calls...</p>
+          </div>
+        </div>
+      </aside>
+
+      <!-- 2. Center Column: Transcript Viewer & Analysis -->
+      <section class="transcript-analysis-panel">
+        <div class="panel-top-bar">
+          <div class="tab-switcher">
+            <button class="tab-btn active" data-tab="tab-transcript">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+              Meeting Transcript
+            </button>
+            <button class="tab-btn" data-tab="tab-analysis">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+              </svg>
+              Discovery Requirements
+              <span class="badge-ready" id="req-count-badge" style="display:none;">0</span>
+            </button>
+          </div>
+
+          <div class="panel-action-buttons">
+            <button id="btn-run-analysis" class="btn btn-secondary btn-sm">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M2 12h5l3 5 5-11 4 6h3"></path>
+              </svg>
+              Extract Requirements
+            </button>
+            <button id="btn-generate-sow" class="btn btn-primary btn-sm">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+              </svg>
+              Generate SOW
+            </button>
+          </div>
+        </div>
+
+        <div class="panel-scroll-area">
+          <!-- Active Meeting Meta Header -->
+          <div class="active-meeting-header" id="meeting-meta-header">
+            <div class="meeting-meta-chips">
+              <span class="chip-id" id="hdr-meeting-id">MEET-2001</span>
+              <span class="chip-date" id="hdr-meeting-date">March 12, 2026</span>
+              <span class="chip-duration" id="hdr-meeting-duration">52 mins</span>
+            </div>
+            <h2 class="active-meeting-title" id="hdr-meeting-title">Loading discovery call...</h2>
+            <div class="participants-row" id="hdr-participants-list">
+              <!-- Participant chips -->
+            </div>
+          </div>
+
+          <!-- Tab Content 1: Transcript Reader -->
+          <div class="tab-view active" id="tab-transcript">
+            <div class="transcript-timeline" id="transcript-dialogue-container">
+              <!-- Rendered speaker turns -->
+            </div>
+          </div>
+
+          <!-- Tab Content 2: Discovery Requirements Analysis -->
+          <div class="tab-view" id="tab-analysis">
+            <div class="analysis-results-container" id="analysis-results-view">
+              <div class="empty-analysis-state">
+                <p>Click <strong>"Extract Requirements"</strong> above to analyze this transcript using AI.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Right Column: Scope of Work Viewer & Generator -->
+      <section class="sow-panel">
+        <div class="sow-panel-header">
+          <div class="sow-title-group">
+            <h3>Scope of Work Document</h3>
+            <span class="sow-status-badge" id="sow-status">Ready</span>
+          </div>
+          <div class="sow-actions-group">
+            <button class="btn btn-outline btn-sm" id="btn-copy-md" title="Copy raw Markdown to clipboard">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy MD
+            </button>
+            <button class="btn btn-outline btn-sm" id="btn-download-md" title="Download .md file">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              Download
+            </button>
+          </div>
+        </div>
+
+        <div class="sow-scroll-area" id="sow-scroll-area">
+          <!-- Investment KPI Cards -->
+          <div class="sow-kpis-strip" id="sow-kpis">
+            <div class="kpi-card">
+              <span class="kpi-label">Total Effort</span>
+              <span class="kpi-val text-indigo" id="kpi-hours">0 hrs</span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-label">Hourly Rate</span>
+              <span class="kpi-val" id="kpi-rate">$150/hr</span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-label">Total Investment</span>
+              <span class="kpi-val text-emerald" id="kpi-cost">$0</span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-label">Timeline</span>
+              <span class="kpi-val text-amber" id="kpi-weeks">0 wks</span>
+            </div>
+          </div>
+
+          <!-- Document Render View -->
+          <div class="sow-document-view" id="sow-content-view">
+            <div class="empty-sow-state" id="empty-sow">
+              <div class="empty-icon">
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                </svg>
+              </div>
+              <h4>No SOW Generated Yet</h4>
+              <p>Select a meeting and click <strong>"Generate SOW"</strong> to compile deliverables, phases, and fee schedules.</p>
+            </div>
+
+            <!-- Structured Phases Breakdown (Shown when generated) -->
+            <div class="sow-rendered-wrapper" id="sow-rendered-wrapper" style="display:none;">
+              <div id="sow-phases-list" class="phases-container">
+                <!-- Dynamically rendered phases -->
+              </div>
+
+              <!-- Milestones Table -->
+              <div class="sow-section-block">
+                <h4>Milestone Payment Schedule</h4>
+                <div class="milestone-table-wrapper" id="milestones-table-container">
+                  <!-- Milestones table -->
+                </div>
+              </div>
+
+              <!-- Markdown Preview / Raw View Toggle -->
+              <div class="sow-section-block">
+                <div class="block-header">
+                  <h4>Full Client Proposal Markdown</h4>
+                  <button class="btn btn-ghost btn-sm" id="btn-toggle-raw">Toggle Raw Markdown</button>
+                </div>
+                <div class="markdown-preview-box" id="sow-markdown-preview"></div>
+                <textarea id="sow-markdown-raw" class="raw-textarea" style="display:none;" readonly></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal: Ingest New Meeting Transcript -->
+    <dialog class="modal-dialog" id="modal-ingest">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Ingest Discovery Meeting Transcript</h3>
+          <button class="btn-close" id="btn-close-ingest">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="form-ingest-meeting">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="inp-title">Meeting / Project Title</label>
+                <input type="text" id="inp-title" placeholder="e.g. WellnessDirectory Discovery Call" required>
+              </div>
+              <div class="form-group">
+                <label for="inp-date">Date</label>
+                <input type="date" id="inp-date" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="inp-client-name">Client Name</label>
+                <input type="text" id="inp-client-name" placeholder="e.g. Dr. Emily Hayes" required>
+              </div>
+              <div class="form-group">
+                <label for="inp-company">Client Company</label>
+                <input type="text" id="inp-company" placeholder="e.g. Hayes Wellness Inc." required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inp-participants">Participants (comma separated)</label>
+              <input type="text" id="inp-participants" placeholder="Dr. Emily Hayes, Jordan Lee">
+            </div>
+            <div class="form-group">
+              <label for="inp-notes">Consultant Discovery Notes</label>
+              <input type="text" id="inp-notes" placeholder="Key goals, requested timeline, or budget notes...">
+            </div>
+            <div class="form-group">
+              <label for="inp-transcript">Meeting Transcript (Paste text, VTT, or SRT)</label>
+              <textarea id="inp-transcript" rows="6" placeholder="[00:00] Speaker 1: Hello..." required></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline" id="btn-cancel-ingest">Cancel</button>
+              <button type="submit" class="btn btn-primary">Save &amp; Open Meeting</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
