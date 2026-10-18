@@ -1,0 +1,39 @@
+services:
+  # ─── Task 1: Knowledge Brain (FastAPI / Python) ───────────────────────────
+  - type: web
+    name: task1-knowledge-brain
+    runtime: python
+    rootDir: task1-knowledge-brain
+    buildCommand: pip install -e .
+    startCommand: python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    plan: free
+
+  # ─── Task 2: Inbox Agent (Node.js / Express Dashboard) ───────────────────
+  - type: web
+    name: task2-inbox-agent
+    runtime: node
+    rootDir: task2-inbox-agent
+    buildCommand: npm install
+    startCommand: npm start
+    plan: free
+    envVars:
+      - key: KNOWLEDGE_BRAIN_URL
+        fromService:
+          type: web
+          name: task1-knowledge-brain
+          property: host
+
+  # ─── Task 3: Meeting to Scope (FastAPI / Python Dashboard) ────────────────
+  - type: web
+    name: task3-meeting-to-scope
+    runtime: python
+    rootDir: task3-meeting-to-scope
+    buildCommand: pip install -e .
+    startCommand: python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    plan: free
+    envVars:
+      - key: KNOWLEDGE_BRAIN_URL
+        fromService:
+          type: web
+          name: task1-knowledge-brain
+          property: host
