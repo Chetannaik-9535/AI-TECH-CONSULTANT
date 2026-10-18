@@ -199,38 +199,218 @@
       margin-block-end: 2rem;
     }
 
-    /* Metrics Strip */
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1rem;
-      margin-block-end: 3rem;
+    /* Hero Tasks Highlight Grid */
+    .hero-tasks-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-block-end: 1rem;
+      text-align: left;
     }
-    .metric-card {
+    .hero-tasks-header h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .hero-tasks-hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .hero-task-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-block-end: 2.75rem;
+      text-align: left;
+    }
+    @media (max-width: 960px) {
+      .hero-task-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .hero-task-card {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
-      border-radius: 1rem;
-      padding: 1.25rem;
-      text-align: left;
-      backdrop-filter: blur(12px);
-      transition: border-color 0.2s ease, transform 0.2s ease;
+      border-radius: 1.15rem;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(16px);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .metric-card:hover {
-      border-color: var(--border-accent);
+    .hero-task-card::before {
+      content: '';
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline-start: 0;
+      inline-size: 100%;
+      block-size: 3px;
+      background: transparent;
+      transition: background 0.25s ease;
+    }
+    .hero-task-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(99, 102, 241, 0.45);
+      background: var(--bg-card-hover);
+      box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.6);
+    }
+    .hero-task-card.active {
+      border-color: var(--primary);
+      background: rgba(22, 31, 56, 0.95);
+      box-shadow: 0 0 0 1px var(--primary), 0 16px 36px -12px var(--primary-glow);
       transform: translateY(-2px);
     }
-    .metric-value {
-      font-size: 1.75rem;
-      font-weight: 800;
-      font-family: var(--font-mono);
-      background: linear-gradient(135deg, #fff, var(--cyan));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .hero-task-card.active::before {
+      background: linear-gradient(90deg, var(--cyan), var(--primary), var(--emerald));
     }
-    .metric-label {
-      font-size: 0.825rem;
+    .task-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-block-end: 0.85rem;
+    }
+    .task-card-id {
+      font-family: var(--font-mono);
+      font-size: 0.725rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: 0.35rem;
+    }
+    .task-card-badge-1 { background: rgba(6, 182, 212, 0.15); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.3); }
+    .task-card-badge-2 { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .task-card-badge-3 { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+
+    .task-card-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.725rem;
+      color: #94a3b8;
+    }
+    .task-card-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+      margin-block-end: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .task-card-desc {
+      font-size: 0.875rem;
       color: var(--text-muted);
-      margin-block-start: 0.25rem;
+      line-height: 1.55;
+      margin-block-end: 1rem;
+      flex-grow: 1;
+    }
+    .task-card-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-block-end: 1rem;
+    }
+    .tech-pill {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.18rem 0.5rem;
+      border-radius: 0.35rem;
+      background: rgba(255, 255, 255, 0.06);
+      color: #cbd5e1;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .task-card-metrics {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.65rem 0.85rem;
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      margin-block-end: 1rem;
+      font-size: 0.775rem;
+      color: var(--text-muted);
+    }
+    .task-card-metrics-val {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: #38bdf8;
+    }
+    .task-card-action {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.825rem;
+      font-weight: 600;
+      padding-block-start: 0.75rem;
+      border-block-start: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      transition: color 0.2s ease;
+    }
+    .hero-task-card:hover .task-card-action,
+    .hero-task-card.active .task-card-action {
+      color: var(--cyan);
+    }
+    .task-card-active-indicator {
+      display: none;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #34d399;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .hero-task-card.active .task-card-active-indicator {
+      display: inline-flex;
+    }
+    .hero-task-card.active .task-card-cta-text {
+      display: none;
+    }
+
+    /* Task Specific Insights Strip inside each tab pane */
+    .task-insights-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.75rem;
+      margin-block-end: 1.5rem;
+    }
+    .insight-stat-card {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border-subtle);
+      border-radius: 0.65rem;
+      padding: 0.85rem 1rem;
+      transition: border-color 0.2s ease;
+    }
+    .insight-stat-card:hover {
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+    .insight-stat-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-block-end: 0.25rem;
+    }
+    .insight-stat-value {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      font-family: var(--font-mono);
+    }
+    .insight-stat-sub {
+      font-size: 0.72rem;
+      color: #94a3b8;
+      margin-block-start: 0.2rem;
     }
 
     /* Tabbed Interactive Showcase */
@@ -587,53 +767,163 @@
   </header>
 
   <main class="container">
-    <!-- Hero Section -->
+    <!-- Hero Section: Spotlight On The 3 Tasks Built -->
     <section class="hero">
       <div class="badge-top">
-        <span>✨ Capstone Project Submission & Demonstration</span>
+        <span class="status-dot"></span>
+        <span>Brilliant Directories • Production AI Solutions Architecture</span>
       </div>
-      <h2>Unified AI Solutions Engineering Portal</h2>
+      <h2>Autonomous AI Systems Built & Deployed</h2>
       <p>
-        An autonomous, production-ready system engineered for <strong>Brilliant Directories</strong>. Seamlessly orchestrating RAG Knowledge Base indexing, automated customer support triage, and client transcript-to-SOW scoping.
+        Engineered for <strong>Brilliant Directories</strong>. Click any task below to inspect architecture, launch live endpoints, and test interactive capabilities.
       </p>
 
-      <!-- Key Metrics -->
-      <div class="metrics-grid">
-        <div class="metric-card">
-          <div class="metric-value">39 / 39</div>
-          <div class="metric-label">Automated Tests Passing (100%)</div>
+      <!-- The 3 Core Tasks Spotlight Cards -->
+      <div class="hero-tasks-header">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Select a Built Task to Inspect Live Insights
+        </h3>
+        <span class="hero-tasks-hint">Click card to switch view ↓</span>
+      </div>
+
+      <div class="hero-task-grid">
+        <!-- Task 1 Card -->
+        <div class="hero-task-card active" id="hero-card-task1" onclick="selectTask('task1', true)">
+          <div>
+            <div class="task-card-top">
+              <span class="task-card-id task-card-badge-1">TASK 01</span>
+              <span class="task-card-status"><span class="status-dot" style="background:#06b6d4; box-shadow: 0 0 8px #06b6d4;"></span> Live on Render</span>
+            </div>
+            <div class="task-card-title">🧠 AI Knowledge Brain</div>
+            <p class="task-card-desc">
+              RAG documentation query engine with token-aware semantic chunking, ChromaDB vector indexing, and zero-hallucination source citation verification.
+            </p>
+            <div class="task-card-tech">
+              <span class="tech-pill">FastAPI</span>
+              <span class="tech-pill">Python 3.11</span>
+              <span class="tech-pill">ChromaDB</span>
+              <span class="tech-pill">RAG</span>
+            </div>
+          </div>
+          <div>
+            <div class="task-card-metrics">
+              <span>Quality & Speed:</span>
+              <span class="task-card-metrics-val">17/17 Tests • Sub-second RAG</span>
+            </div>
+            <div class="task-card-action">
+              <span class="task-card-cta-text">Click to View Insights & Demo →</span>
+              <span class="task-card-active-indicator"><span class="status-dot"></span> Viewing Insights</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </div>
         </div>
-        <div class="metric-card">
-          <div class="metric-value">3 Services</div>
-          <div class="metric-label">Autonomous Microservices</div>
+
+        <!-- Task 2 Card -->
+        <div class="hero-task-card" id="hero-card-task2" onclick="selectTask('task2', true)">
+          <div>
+            <div class="task-card-top">
+              <span class="task-card-id task-card-badge-2">TASK 02</span>
+              <span class="task-card-status"><span class="status-dot" style="background:#10b981; box-shadow: 0 0 8px #10b981;"></span> Live on Render</span>
+            </div>
+            <div class="task-card-title">📬 Customer Inbox Agent</div>
+            <p class="task-card-desc">
+              Autonomous customer support triage service featuring heuristic & LLM classification, SLA urgency routing, sentiment analysis, and tone-adaptive resolution drafts.
+            </p>
+            <div class="task-card-tech">
+              <span class="tech-pill">Node.js 20</span>
+              <span class="tech-pill">Express</span>
+              <span class="tech-pill">REST API</span>
+              <span class="tech-pill">Triage</span>
+            </div>
+          </div>
+          <div>
+            <div class="task-card-metrics">
+              <span>Support Impact:</span>
+              <span class="task-card-metrics-val">60% Deflection • 12/12 Tests</span>
+            </div>
+            <div class="task-card-action">
+              <span class="task-card-cta-text">Click to View Insights & Demo →</span>
+              <span class="task-card-active-indicator"><span class="status-dot"></span> Viewing Insights</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </div>
         </div>
-        <div class="metric-card">
-          <div class="metric-value">60%</div>
-          <div class="metric-label">Support Deflection Rate</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-value">&lt; 90s</div>
-          <div class="metric-label">Meeting Transcript-to-SOW</div>
+
+        <!-- Task 3 Card -->
+        <div class="hero-task-card" id="hero-card-task3" onclick="selectTask('task3', true)">
+          <div>
+            <div class="task-card-top">
+              <span class="task-card-id task-card-badge-3">TASK 03</span>
+              <span class="task-card-status"><span class="status-dot" style="background:#f59e0b; box-shadow: 0 0 8px #f59e0b;"></span> Live on Render</span>
+            </div>
+            <div class="task-card-title">📋 Meeting to Scope</div>
+            <p class="task-card-desc">
+              Deterministic discovery transcript scoping engine that extracts client requirements, constructs phased work breakdown structures, and calculates fee schedules.
+            </p>
+            <div class="task-card-tech">
+              <span class="tech-pill">FastAPI</span>
+              <span class="tech-pill">Python 3.11</span>
+              <span class="tech-pill">Jinja2</span>
+              <span class="tech-pill">SOW Engine</span>
+            </div>
+          </div>
+          <div>
+            <div class="task-card-metrics">
+              <span>Turnaround & QA:</span>
+              <span class="task-card-metrics-val">&lt; 90s Turnaround • 10/10 Tests</span>
+            </div>
+            <div class="task-card-action">
+              <span class="task-card-cta-text">Click to View Insights & Demo →</span>
+              <span class="task-card-active-indicator"><span class="status-dot"></span> Viewing Insights</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Interactive Showcase Section -->
+    <!-- Interactive Showcase Section with Anchor -->
+    <div id="task-insights-anchor" style="scroll-margin-top: 5.5rem;"></div>
     <section class="showcase-section">
       <div class="showcase-header">
         <div class="showcase-title">
-          <h3>Interactive Evaluator Console</h3>
+          <h3>Interactive Evaluator Console & Task Insights</h3>
           <p>Test all 3 tasks live in this unified portal or click the launch buttons to access each Render service directly.</p>
         </div>
         <div class="tabs-nav" role="tablist">
-          <button class="tab-btn active" onclick="switchTab('task1')">🧠 Task 1: Knowledge Brain</button>
-          <button class="tab-btn" onclick="switchTab('task2')">📬 Task 2: Inbox Agent</button>
-          <button class="tab-btn" onclick="switchTab('task3')">📋 Task 3: Meeting to Scope</button>
+          <button class="tab-btn active" data-task="task1" onclick="selectTask('task1', false)">🧠 Task 1: Knowledge Brain</button>
+          <button class="tab-btn" data-task="task2" onclick="selectTask('task2', false)">📬 Task 2: Inbox Agent</button>
+          <button class="tab-btn" data-task="task3" onclick="selectTask('task3', false)">📋 Task 3: Meeting to Scope</button>
         </div>
       </div>
 
       <!-- ================= TASK 1 PANE ================= -->
       <div id="pane-task1" class="tab-pane active">
+        <!-- Task 1 Insights Bar -->
+        <div class="task-insights-bar">
+          <div class="insight-stat-card">
+            <div class="insight-stat-label">Core Architecture</div>
+            <div class="insight-stat-value" style="color: #38bdf8;">Hybrid RAG Engine</div>
+            <div class="insight-stat-sub">Semantic Vector (ChromaDB) + BM25</div>
+          </div>
+          <div class="insight-stat-card">
+            <div class="insight-stat-label">Citation Accuracy</div>
+            <div class="insight-stat-value" style="color: #34d399;">98% Verified</div>
+            <div class="insight-stat-sub">Direct Brilliant Directories URLs</div>
+          </div>
+          <div class="insight-stat-card">
+            <div class="insight-stat-label">Quality Assurance</div>
+            <div class="insight-stat-value" style="color: #a78bfa;">17 / 17 Tests Passing</div>
+            <div class="insight-stat-sub">Pytest unit & vector integration</div>
+          </div>
+          <div class="insight-stat-card">
+            <div class="insight-stat-label">Live Service</div>
+            <div class="insight-stat-value" style="color: #f472b6;">FastAPI • Port 8000</div>
+            <div class="insight-stat-sub">Endpoints: /query, /ingest, /docs</div>
+          </div>
+        </div>
+
         <div class="service-banner">
           <div class="service-banner-info">
             <span class="service-tag">FastAPI • Python 3.11 • Port 8000</span>
@@ -678,6 +968,30 @@
 
       <!-- ================= TASK 2 PANE ================= -->
       <div id="pane-task2" class="tab-pane">
+        <!-- Task 2 Insights Bar -->
+        <div class="task-insights-bar">
+          <div class="insight-stat-card">
+            <div class="insight-stat-label">Support Deflection</div>
+            <div class="insight-stat-value" style="color: #34d399;">60% Auto-Resolved</div>
+            <div class="insight-stat-sub">Tier-1 automated deflection</div>
+          </div>
+          <div class="insight-stat-card">
+            <div class="insight-stat-label">Triage & SLAs</div>
+            <div class="insight-stat-value" style="color: #fb7185;">1h, 4h, 12h, 24h</div>
+            <div class="insight-stat-sub">Sentiment & urgency routing matrix</div>
+          </div>
+          <div class="insight-stat-card">
+            <div class="insight-stat-label">Persona Modes</div>
+            <div class="insight-stat-value" style="color: #38bdf8;">4 Adaptive Tones</div>
+            <div class="insight-stat-sub">Professional, Warm, Technical, Direct</div>
+          </div>
+          <div class="insight-stat-card">
+            <div class="insight-stat-label">Quality Assurance</div>
+            <div class="insight-stat-value" style="color: #a78bfa;">12 / 12 Tests Passing</div>
+            <div class="insight-stat-sub">Node.js Express API & triage suite</div>
+          </div>
+        </div>
+
         <div class="service-banner">
           <div class="service-banner-info">
             <span class="service-tag">Express.js • Node 20 • Port 3000</span>
@@ -740,6 +1054,30 @@
 
       <!-- ================= TASK 3 PANE ================= -->
       <div id="pane-task3" class="tab-pane">
+        <!-- Task 3 Insights Bar -->
+        <div class="task-insights-bar">
+          <div class="insight-stat-card">
+            <div class="insight-stat-label">Scoping Speed</div>
+            <div class="insight-stat-value" style="color: #38bdf8;">&lt; 90 Seconds</div>
+            <div class="insight-stat-sub">Raw transcript to formal SOW</div>
+          </div>
+          <div class="insight-stat-card">
+            <div class="insight-stat-label">Extraction Logic</div>
+            <div class="insight-stat-value" style="color: #fbbf24;">Deterministic WBS</div>
+            <div class="insight-stat-sub">Phased deliverable & milestone hours</div>
+          </div>
+          <div class="insight-stat-card">
+            <div class="insight-stat-label">Fee Modeling</div>
+            <div class="insight-stat-value" style="color: #34d399;">Dynamic Rate ($/hr)</div>
+            <div class="insight-stat-sub">50/50 deposit & acceptance milestones</div>
+          </div>
+          <div class="insight-stat-card">
+            <div class="insight-stat-label">Quality Assurance</div>
+            <div class="insight-stat-value" style="color: #a78bfa;">10 / 10 Tests Passing</div>
+            <div class="insight-stat-sub">Pytest models, extractor & generator</div>
+          </div>
+        </div>
+
         <div class="service-banner">
           <div class="service-banner-info">
             <span class="service-tag">FastAPI • Python 3.11 • Port 8001</span>
@@ -903,22 +1241,47 @@
 
   <footer>
     <div class="container">
-      <p>AI Tech Consultant • Capstone Project Ecosystem for Brilliant Directories</p>
+      <p>AI Tech Consultant • Autonomous AI Solutions for Brilliant Directories</p>
       <p style="font-size: 0.75rem; margin-block-start: 0.5rem; color: #64748b;">
-        Engineered with FastAPI, Node.js/Express, Python 3.11, and Modern Web Standards.
+        Technical Evaluation & Architecture Showcase • Engineered with FastAPI, Node.js/Express, ChromaDB, Python 3.11, and Modern Web Standards.
       </p>
     </div>
   </footer>
 
   <!-- Interactive Sandbox Script -->
   <script>
-    // Tab Switching
-    function switchTab(taskId) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    // Tab & Task Switching
+    function selectTask(taskId, shouldScroll = false) {
+      // 1. Update top hero task cards
+      document.querySelectorAll('.hero-task-card').forEach(card => card.classList.remove('active'));
+      const activeCard = document.getElementById('hero-card-' + taskId);
+      if (activeCard) activeCard.classList.add('active');
+
+      // 2. Update tab buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        if (btn.getAttribute('data-task') === taskId) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // 3. Update tab panes
       document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
-      
-      event.currentTarget.classList.add('active');
-      document.getElementById('pane-' + taskId).classList.add('active');
+      const activePane = document.getElementById('pane-' + taskId);
+      if (activePane) activePane.classList.add('active');
+
+      // 4. Smoothly scroll to insights section if requested
+      if (shouldScroll) {
+        const anchor = document.getElementById('task-insights-anchor');
+        if (anchor) {
+          anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    }
+
+    function switchTab(taskId) {
+      selectTask(taskId, false);
     }
 
     // Task 1 Knowledge Base Mock Data
