@@ -1,46 +1,22 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "services": {
-    "task1-knowledge-brain": {
-      "root": "task1-knowledge-brain",
-      "framework": "fastapi",
-      "buildCommand": "pip install --upgrade pip && pip install -r requirements.txt"
-    },
-    "task2-inbox-agent": {
-      "root": "task2-inbox-agent",
-      "framework": "express",
-      "buildCommand": "npm install",
-      "bindings": [
-        {
-          "type": "service",
-          "service": "task1-knowledge-brain",
-          "format": "url",
-          "env": "KNOWLEDGE_BRAIN_URL"
-        }
-      ]
-    },
-    "task3-meeting-to-scope": {
-      "root": "task3-meeting-to-scope",
-      "framework": "fastapi",
-      "buildCommand": "pip install --upgrade pip && pip install -r requirements.txt",
-      "bindings": [
-        {
-          "type": "service",
-          "service": "task1-knowledge-brain",
-          "format": "url",
-          "env": "KNOWLEDGE_BRAIN_URL"
-        }
-      ]
-    },
-    "portal": {
-      "root": ".",
-      "framework": "static"
-    }
-  },
+  "version": 2,
+  "cleanUrls": true,
   "rewrites": [
-    { "source": "/api/brain/(.*)", "destination": { "service": "task1-knowledge-brain" } },
-    { "source": "/api/inbox/(.*)", "destination": { "service": "task2-inbox-agent" } },
-    { "source": "/api/scope/(.*)", "destination": { "service": "task3-meeting-to-scope" } },
-    { "source": "/(.*)", "destination": { "service": "portal" } }
+    {
+      "source": "/api/brain/:path*",
+      "destination": "https://task1-knowledge-brain-6y2f.onrender.com/:path*"
+    },
+    {
+      "source": "/api/inbox/:path*",
+      "destination": "https://task2-inbox-agent-6y2f.onrender.com/api/:path*"
+    },
+    {
+      "source": "/api/scope/:path*",
+      "destination": "https://task3-meeting-to-scope-6y2f.onrender.com/api/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
